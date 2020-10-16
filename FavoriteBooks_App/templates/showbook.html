@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Book</title>
+    <!-- Attaching Boot Strap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- Attaching CSS files -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+    <!-- Attaching JS files  -->
+    <!-- <script src="{% static 'js/script.js' %}"></script>  -->
+</head>
+   <body>
+        <nav>
+            <h2>Coding Dojo Wall</h2>
+            <h3>Welcome, {{ user.first_name }}!</h3>
+            <a href="/logout">Log Out</a>
+        </nav>
+        <a href="/main">back</a>
+        <!-- <div id="show">
+                    <form action="/edit/{{book.id}}" method=POST>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" class="form-control" value="{{ book.title}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" cols="30" rows="5" class="form-control">{{ book.description}}</textarea>
+                
+                            <button class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                <p>Added By: {{ book.user_uploaded.first_name }} {{ book.user_uploaded.last_name }}</p>
+                <p>Added On: {{ book.created_at }}</p>
+                <p>Last updated: {{ book.updated_at }}</p>
+                <a href="/delete/{{ book.id }}">Delete</a>
+        </div> -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-5 px-12">
+                    {% if book.user_uploaded.id == request.session.user_id %}
+                    <form action="/edit/{{book.id}}" method="post">
+                        {% csrf_token %}
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="title" class="form-control" value="{{ book.title}}">
+                        <label for="description">Description</label>
+                        <input name="description" class="form-control w-50" placeholder="{{book.description}}">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <a href="/delete/{{ book.id }}" role="button" class="btn btn-danger">Delete</a>
+                    </form>
+                    {% else %}
+                    <h3>{{book.title}}</h3>
+                    <p>Description: {{book.description}}</p>
+                    {% endif %}
+                    <p>Added by: {{book.user_uploaded.first_name}} {{book.user_uploaded.last_name}}</p>
+                    <p>Added on: {{book.created_at}}</p>
+                    <p>Last Updated on: {{book.updated_at}}</p>
+                </div>
+
+                <div class="col-5 px-12" >
+                    <h3>Users Who Favorited the Book</h3>
+                    <div >
+                    <ul>
+                        {% for fav_user in book.users_likes.all %}
+                        <li id="list">{{fav_user.first_name}} {{fav_user.last_name}}</li>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                    <!-- Below "user" is user object passed from views.py -->
+                    {% if user in book.users_likes.all %}
+                    <a href="/unfavorite/{{book.id}}" role="button" class="btn btn-danger">Remove yourself From Favorites</a>
+                    {% else %}
+                    <a href="/favorite/{{book.id}}" role="button" class="btn btn-warning">Add to Favorites</a>
+                    <!-- <a href="/unfavorite/{{book.id}}" role="button" class="btn btn-danger">Remove From Favorites</a> -->
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+   </body>
+</html>

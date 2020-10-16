@@ -76,4 +76,30 @@ list-style: none;
 }
 
 
+#post {
 
+    padding: 20px;
+    background-color: pink;
+}
+
+#post h1 {
+
+    color: black;
+    font-weight: 500;
+    font-style: italic;
+}
+
+#allbooks {
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+#show {
+
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+#list {
+    color: yellow;
+}
